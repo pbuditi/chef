@@ -1,0 +1,18 @@
+@echo off
+
+cd <%= @source %>
+
+# Force binary mode transfer
+option transfer binary
+
+open sftp://<%= @user %>:<%= @password %>@<%= @ftp_server %>/
+
+# Change the remote directory
+cd <%= @target %>
+
+# Upload the file to current working directory
+put <%= @source_file %> 
+# Disconnect
+close
+# Exit WinSCP
+exit
