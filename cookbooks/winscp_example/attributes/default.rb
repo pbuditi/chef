@@ -1,0 +1,8 @@
+default["sftp-folders"]["bin"] = "/tmp/sftp/bin"
+default["sftp-folders"]["incoming"] = "/tmp/sftp/incoming"
+default["sftp-folders"]["outgoing"] = "/tmp/sftp/outgoing"
+default["sftp-folders"]["archive"] = "/tmp/sftp/archive"
+default["sftp"]["user"] = "ftpuser"
+default["sftp"]["password"] = "ftp123"
+default["sftp"]["target"] = "/home/ftpuser/www"
+default["sftp"]["server"] = "pbuditi5.mylabserver.com"
