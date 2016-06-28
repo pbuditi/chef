@@ -36,9 +36,14 @@ template "#{node["sftp-folders"]["bin"]}/autocleanup.bat" do
 end
 
 
-# create windows scheduler if it doesn't eist already
+# create windows scheduler for cleanup
 #execute 'schtasks' do
-#	command 'schtasks /create /sc minute /mo 30 /tr #{node["sftp-folders"]["bin"]}/cleanupsftp.bat /tn #{schedule_task}'
-#	not_if 'schtasks /query /tn #{schedule_task} /NH /FO CSV'
+#	command 'schtasks /create /sc minute /mo 30 /tr #{node["sftp-folders"]["bin"]}/autocleanup.bat /tn #{node["schedule_task"]["autocleanup"]}'
+#	not_if 'schtasks /query /tn #{node["schedule_task"]["autocleanup"]} /NH /FO CSV'
 #end
 
+# create windows scheduler for sftp
+#execute 'schtasks' do
+#	command 'schtasks /create /sc minute /mo 30 /tr #{node["sftp-folders"]["bin"]}/remotesftp.bat /tn #{node["schedule_task"]["remotesftp"]}'
+#	not_if 'schtasks /query /tn #{node["schedule_task"]["remotesftp"]} /NH /FO CSV'
+#end
