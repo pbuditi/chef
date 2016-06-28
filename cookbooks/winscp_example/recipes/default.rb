@@ -16,7 +16,7 @@ node["sftp-folders"].each do |folderkey, folderval|
 	end
 end
 	
-template "#{node["sftp-folders"]["bin"]}/remoteftp.bat" do
+template "#{node["sftp-folders"]["bin"]}\\remoteftp.bat" do
 	source "remoteftp.erb"
 	mode "0644"
 		variables(
@@ -25,4 +25,11 @@ template "#{node["sftp-folders"]["bin"]}/remoteftp.bat" do
 				:ftppath => "#{node["sftp"]["target"]}",
 				:ftpserver => "#{node["sftp"]["server"]}"
 			)
+end
+
+
+# create windows scheduler if it doesn't eist already
+execute 'schtasks' do
+	command 'schtasks /create /sc minute /mo 30 /tr #{node["sftp-folders"]["bin"]}/cleanupsftp.bat /tn #{schedule_task}'
+	not if 'schtasks /query /tn #{schedule_task} /NH /FO CSV'
 end
