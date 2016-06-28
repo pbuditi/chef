@@ -41,3 +41,4 @@ end
 #	command 'schtasks /create /sc minute /mo 30 /tr #{node["sftp-folders"]["bin"]}/cleanupsftp.bat /tn #{schedule_task}'
 #	not_if 'schtasks /query /tn #{schedule_task} /NH /FO CSV'
 #end
+
