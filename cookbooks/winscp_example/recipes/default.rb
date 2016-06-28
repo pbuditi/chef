@@ -30,6 +30,6 @@ end
 
 # create windows scheduler if it doesn't eist already
 execute 'schtasks' do
-	command 'schtasks /create /sc minute /mo 30 /tr #{node["sftp-folders"]["bin"]}/cleanupsftp.bat /tn #{schedule_task}'
-	not if 'schtasks /query /tn #{schedule_task} /NH /FO CSV'
+	command 'schtasks /create /sc minute /mo 30 /tr #{node["sftp-folders"]["bin"]}/autocleanup.bat /tn #{schedule_task}'
+	not_if 'schtasks /query /tn #{schedule_task} /NH /FO CSV'
 end
