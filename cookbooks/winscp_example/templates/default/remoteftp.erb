@@ -1,18 +1,35 @@
 @echo off
-set SESSION=sftp://<%= @ftpuser %>:<%= @ftppwd %>@<%= @ftpserver %>/
+set SESSION=sftp://<%= @ftpuser %>:<%= @ftppwd %>@<%= @ftpserver %>/ -hostkey=*
 set REMOTE_PATH=<%= @ftppath %>
+set LOCAL_PATH=<%= @sftp_home %>
  
+for /F %%i in ('dir /b "%LOCAL_PATH%\outgoing\*.*"') do (
+   REM echo Folder is NON empty
+   goto upload
+)
+goto end
+
+:upload
 echo open %SESSION% >> script.tmp
- 
-rem Generate "put" command for each line in list file
-for /F %%i in (list.txt) do echo put "%%i" "%REMOTE_PATH%" >> script.tmp
- 
+echo lcd %LOCAL_PATH%\outgoing >> script.tmp
+echo cd %REMOTE_PATH% >> script.tmp
+echo put * >> script.tmp
 echo exit >> script.tmp
- 
-"C:\Program Files (x86)\WinSCP\winscp.com" /script=script.tmp
-set RESULT=%ERRORLEVEL%
- 
+"C:\WinSCP\winscp.com" /script=script.tmp 
+set RESULT=%ERRORLEVEL% 
 del script.tmp
- 
-rem Propagating WinSCP exit code
+
+if %RESULT% neq 0 goto error 
+echo Success! All files uploaded Successfully 
+
+move "%LOCAL_PATH%\outgoing\*" "%LOCAL_PATH%\archive\" 
+exit /b %ERRORLEVEL%
+
+:error 
+echo Error! One or More files failed to upload 
 exit /b %RESULT%
+
+:end
+echo No action to take!
+exit /b 0
+

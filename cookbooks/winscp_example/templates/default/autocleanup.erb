@@ -1,0 +1,16 @@
+@echo off
+
+echo "Cleaning up the following files that are older than 30 days!"
+forfiles -p "C:\sftp\archive" -s -m *.* -d -30 -c "cmd /c echo @file"
+
+forfiles -p "C:\sftp\archive" -s -m *.* -d -30 -c "cmd /c del /F @file"
+
+set RESULT=%ERRORLEVEL%
+
+if %RESULT% neq 0 goto error 
+echo Success! Files older than 30 days has been cleanedup
+exit /b 0
+
+:error 
+echo Error! cleaning up one or more files 
+exit /b %RESULT
