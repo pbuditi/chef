@@ -1,8 +1,9 @@
 @echo off
 set SESSION=sftp://<%= @ftpuser %>:<%= @ftppwd %>@<%= @ftpserver %>/ -hostkey=*
-set REMOTE_PATH=<%= @ftppath %>
+set REMOTE_PATH=<%= @ftppathOut %>
+set REMOTE_IN_PATH=<%= @ftppathIn %>
 set LOCAL_PATH=<%= @sftp_home %>
- 
+
 for /F %%i in ('dir /b "%LOCAL_PATH%\outgoing\*.*"') do (
    REM echo Folder is NON empty
    goto upload
@@ -14,6 +15,9 @@ echo open %SESSION% >> script.tmp
 echo lcd %LOCAL_PATH%\outgoing >> script.tmp
 echo cd %REMOTE_PATH% >> script.tmp
 echo put * >> script.tmp
+echo lcd %LOCAL_PATH%\incoming >> script.tmp
+echo cd %REMOTE_IN_PATH% >> script.tmp
+echo get * >> script.tmp
 echo exit >> script.tmp
 "C:\WinSCP\winscp.com" /script=script.tmp 
 set RESULT=%ERRORLEVEL% 
