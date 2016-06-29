@@ -22,7 +22,11 @@ del script.tmp
 if %RESULT% neq 0 goto error 
 echo Success! All files uploaded Successfully 
 
-move "%LOCAL_PATH%\outgoing\*" "%LOCAL_PATH%\archive\" 
+set datef=%date:~-4%%date:~4,2%%date:~7,2%
+set timef=%time:~0,2%%time:~3,2%%time:~6,2%
+set datetimef=%datef%-%timef%
+md "%LOCAL_PATH%\archive\%datetimef%"
+move "%LOCAL_PATH%\outgoing\*" "%LOCAL_PATH%\archive\%datetimef%" 
 exit /b %ERRORLEVEL%
 
 :error 
