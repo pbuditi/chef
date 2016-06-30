@@ -3,28 +3,39 @@ set SESSION=sftp://<%= @ftpuser %>:<%= @ftppwd %>@<%= @ftpserver %>/ -hostkey=*
 set REMOTE_PATH=<%= @ftppathOut %>
 set REMOTE_IN_PATH=<%= @ftppathIn %>
 set LOCAL_PATH=<%= @sftp_home %>
+set OUTGOING=0
+
+if exist %LOCAL_PATH%\script.tmp ( del %LOCAL_PATH%\script.tmp )
+
+echo open %SESSION% >> %LOCAL_PATH%\script.tmp 
+echo bin >> %LOCAL_PATH%\script.tmp
 
 for /F %%i in ('dir /b "%LOCAL_PATH%\outgoing\*.*"') do (
    REM echo Folder is NON empty
+   set OUTGOING=1
    goto upload
 )
-goto end
+goto download
 
 :upload
-echo open %SESSION% >> script.tmp
-echo lcd %LOCAL_PATH%\outgoing >> script.tmp
-echo cd %REMOTE_PATH% >> script.tmp
-echo put * >> script.tmp
-echo lcd %LOCAL_PATH%\incoming >> script.tmp
-echo cd %REMOTE_IN_PATH% >> script.tmp
-echo get * >> script.tmp
-echo exit >> script.tmp
-"C:\WinSCP\winscp.com" /script=script.tmp 
+echo lcd %LOCAL_PATH%\outgoing >> %LOCAL_PATH%\script.tmp
+echo cd %REMOTE_PATH% >> %LOCAL_PATH%\script.tmp
+echo put * >> %LOCAL_PATH%\script.tmp
+
+:download
+echo lcd %LOCAL_PATH%\incoming >> %LOCAL_PATH%\script.tmp
+echo cd %REMOTE_IN_PATH% >> %LOCAL_PATH%\script.tmp
+echo get * >> %LOCAL_PATH%\script.tmp
+echo exit >> %LOCAL_PATH%\script.tmp
+
+"C:\WinSCP\winscp.com" /script=%LOCAL_PATH%\script.tmp 
 set RESULT=%ERRORLEVEL% 
-del script.tmp
+del %LOCAL_PATH%\script.tmp
 
 if %RESULT% neq 0 goto error 
-echo Success! All files uploaded Successfully 
+echo Success! All files Transfered Successfully 
+
+if %OUTGOING% neq 1 goto end
 
 set datef=%date:~-4%%date:~4,2%%date:~7,2%
 set timef=%time:~0,2%%time:~3,2%%time:~6,2%
@@ -38,6 +49,6 @@ echo Error! One or More files failed to upload
 exit /b %RESULT%
 
 :end
-echo No action to take!
+echo Job completed!
 exit /b 0
 
