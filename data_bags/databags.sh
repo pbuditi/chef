@@ -1,6 +1,6 @@
 #!/bin/bash
 
-databag_file="databags.txt"
+databag_file="data_bags/databags.txt"
 data_bags_list=`knife data bag list 2>/dev/null`
 databags={$data_bags_list}
 
