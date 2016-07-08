@@ -1,0 +1,9 @@
+{
+	"id" : "mysqluser",
+	"comments":"mysql user",
+	"uid":"2010",
+	"gid":0,
+	"home":"/home/mysqluser",
+	"shell":"/bin/bash",
+	"password":"sql123"
+}
