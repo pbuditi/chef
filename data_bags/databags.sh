@@ -17,7 +17,7 @@ for line in $lines; do
         done
         if [ $found == 0 ] ; then
         	echo "creating data bag $line..."
-        	output=`knife data bag create $line` 2>/dev/null
+        	output=`/usr/local/bin/knife data bag create $line` 2>/dev/null
         fi
 done
 
