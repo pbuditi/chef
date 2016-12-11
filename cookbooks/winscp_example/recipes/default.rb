@@ -23,8 +23,8 @@ template "#{node["sftp-folders"]["bin"]}/remotesftp.bat" do
 		variables(
 				:ftpuser => "#{node["sftp"]["user"]}",
 				:ftppwd => "#{node["sftp"]["password"]}",
-				:ftppathOut => "#{node["sftp"]["target"]['outgoing']}",
-				:ftppathIn => "#{node["sftp"]["target"]['incoming']}",
+				:ftppathOut => "#{node["sftp"]["target"]["outgoing"]}",
+				:ftppathIn => "#{node["sftp"]["target"]["incoming"]}",
 				:ftpserver => "#{node["sftp"]["server"]}",
 				:sftp_home => "#{node["sftp-home"]}"
 			)
